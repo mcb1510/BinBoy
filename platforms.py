@@ -10,7 +10,7 @@ class Platforms:
             for col_index, col in enumerate(row):
                 x = col_index * Platforms.PLAT_SIZE
                 y = row_index * Platforms.PLAT_SIZE
-                print(f"x {x}  y{y}")
+                #print(f"x {x}  y{y}")
                 if col == "X":
                     platform = pygame.Rect((x,y,50,50))
                     Platforms.PLATFORMS.append(platform)
@@ -20,7 +20,7 @@ class Platforms:
             for col_index, col in enumerate(row):
                 x = col_index * Platforms.PLAT_SIZE
                 y = row_index * Platforms.PLAT_SIZE
-                print(f"x {x}  y{y}")
+                #print(f"x {x}  y{y}")
                 if col == "P":
                     return x
     def setPlayerPositionY():
@@ -28,6 +28,6 @@ class Platforms:
             for col_index, col in enumerate(row):
                 x = col_index * Platforms.PLAT_SIZE
                 y = row_index * Platforms.PLAT_SIZE
-                print(f"x {x}  y{y}")
+                #print(f"x {x}  y{y}")
                 if col == "P":
                     return y

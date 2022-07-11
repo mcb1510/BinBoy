@@ -2,33 +2,50 @@ import pygame
 import movement
 import graphics
 from platforms import Platforms
+from trash import Trash
 
 class Collision:
-    X_COLLI = False
-    Y_COLLI = False
-    ON_GROUND = True
-    new_player_rect = pygame.Rect(0,0,50,75)
+    x_collision = False
+    y_collision = False
+    player_on_ground = False
+    new_player_rect = pygame.Rect(0,0,0,0)
+    heigth = 100
+    width = 50
 
-    def checkXcolli():
-        pass
-        # binboy = graphics.Binboy.BINBOY_POS
-        # for sprite in Platforms.PLATFORMS:
-        #     if sprite.colliderect(binboy):
-        #         if movement.Chara.MOVE_L:
-        #             binboy.left = sprite.right
-        #         elif movement.Chara.MOVE_R:
-        #             binboy.right = sprite.left
+    def checkXcolli(new_player_x, binboy):
+        Collision.new_player_rect = pygame.Rect(new_player_x,binboy.y,Collision.width, Collision.heigth)
+        Collision.x_collision = False
+        for Collision.platform in Platforms.PLATFORMS:
+            if Collision.platform.colliderect(Collision.new_player_rect):
+                Collision.x_collision = True
+                break
+        if Collision.x_collision == False:
+            binboy.x = new_player_x
 
-    def checkYcolli():
-        binboy = graphics.Binboy.BINBOY_POS
-        for sprite in Platforms.PLATFORMS:
-            if sprite.colliderect(binboy):
-                movement.Chara.isOnGround = True
-                if movement.Chara.VEL_Y > 0: #moving up
-                    binboy.top = sprite.bottom
-                    movement.Chara.VEL_Y = -11
-                elif movement.Chara.VEL_Y < 0: #moving down
-                    binboy.bottom = sprite.top
-                    movement.Chara.VEL_Y = -11
-            else:
-                movement.Chara.isOnGround = False
+    def checkYcolli(new_player_y, binboy):
+        Collision.new_player_rect = pygame.Rect(binboy.x,new_player_y,Collision.width, Collision.heigth)
+        Collision.y_collision = False
+        Collision.player_on_ground = False
+
+        for Collision.platform in Platforms.PLATFORMS:
+            if Collision.platform.colliderect(Collision.new_player_rect):
+                Collision.y_collision = True
+                movement.Chara.VEL_Y = 0
+                if Collision.platform[1] > new_player_y:
+                    binboy.y = Collision.platform[1] - Collision.heigth
+                    Collision.player_on_ground = True
+                break
+        if Collision.y_collision == False:
+            binboy.y = new_player_y
+
+    def checkTrashColli(binboy):
+        Collision.new_player_rect = pygame.Rect(binboy.x, binboy.y, Collision.width, Collision.heigth)
+        for Collision.trash in Trash.TRASH:
+            if Collision.trash.colliderect(Collision.new_player_rect):
+                Trash.TRASH.remove(Collision.trash)
+                graphics.Window.SCORE += 1
+        for Collision.trash in Trash.TRASH1:
+            if Collision.trash.colliderect(Collision.new_player_rect):
+                Trash.TRASH1.remove(Collision.trash)
+                graphics.Window.SCORE += 1
+    

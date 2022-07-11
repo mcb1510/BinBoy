@@ -5,11 +5,16 @@ import pygame
 import os
 import movement
 import platforms
+import trash
+import random
+from pygame import mixer
+
+
 pygame.init()
 
 class Binboy:
-    binboy_height = 80
-    binboy_width = 48
+    binboy_height = 100#80
+    binboy_width = 50#48
     posX = platforms.Platforms.setPlayerPosition()
     posY = platforms.Platforms.setPlayerPositionY()
     #BINBOY_POS = pygame.Rect(100, 438 - 70, 50, 75)
@@ -17,7 +22,7 @@ class Binboy:
     RUN_FRAME = 0
 
     #Set the movement.Chara character image
-    BINBOY_IDOL = pygame.image.load(os.path.join('assets', 'binboyTEST.png'))
+    BINBOY_IDOL = pygame.image.load(os.path.join('assets', 'binboyTEST1.png'))
     BINBOY_IDOL = pygame.transform.scale(BINBOY_IDOL, (binboy_width, binboy_height))
 
     #The character images when moving right
@@ -60,29 +65,47 @@ class Binboy:
 
 class Window:
     pygame.display.set_caption("Binboy")
-    WIDTH, HEIGHT = 1366, 768
+    WIDTH, HEIGHT = 1600,900
     WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+    BEACH = pygame.image.load(os.path.join('assets', 'beach.png')).convert_alpha()
     SKY = (180, 180, 255)
     GRASS = (100, 200, 100)
+    SAND = (248,200,129)
     GROUND = pygame.Rect(0, HEIGHT - HEIGHT/8, WIDTH, 200)
     BACKGROUND = (245, 66, 152)
     white = (255, 255, 255)
     font = pygame.font.Font('freesansbold.ttf', 32)
+    TRASH = pygame.image.load(os.path.join('assets', 'colo_cup_1.png'))
+    TRASH = pygame.transform.scale(TRASH, (50, 50))
+    TRASH1 = pygame.image.load(os.path.join('assets', 'trash_can.png'))
+    TRASH1 = pygame.transform.scale(TRASH1, (50, 50))
+    TRASH2 = pygame.image.load(os.path.join('assets', 'plastic_bin_open.png'))
+    TRASH2 = pygame.transform.scale(TRASH2, (50, 50))
+    SCORE = 0
+    mixer.music.load("theme.mp3")
+    mixer.music.set_volume(0.1)
+    mixer.music.play(-1)
 
     def draw_level_1(self, SCROLL_INDEX):
-        text = Window.font.render('score 0', True,  Window.white)
+        score = str(Window.SCORE)
+        text = Window.font.render(f'Score {score}', True,  Window.white)
         textRect = text.get_rect()
         textRect.center = (60, 20)
-        Window.WIN.fill(Window.SKY)
-        pygame.draw.rect(Window.WIN, Window.BACKGROUND, pygame.Rect(Window.WIDTH - SCROLL_INDEX, 0, Window.WIDTH, Window.HEIGHT))
+        #Window.WIN.fill(Window.SKY)
+        Window.WIN.blit(Window.BEACH,(0 - SCROLL_INDEX,0))
+        #pygame.draw.rect(Window.WIN, Window.BACKGROUND, pygame.Rect(Window.WIDTH - SCROLL_INDEX, 0, Window.WIDTH, Window.HEIGHT))
         Window.WIN.blit(text, textRect)
        # pygame.draw.rect(Window.WIN, Window.GRASS, Window.GROUND)
 
         Binboy.draw_binboy(Binboy)
         for plat in platforms.Platforms.PLATFORMS:
-            pygame.draw.rect(Window.WIN, Window.GRASS, plat)
+            pygame.draw.rect(Window.WIN, Window.SAND, plat)
         
-      
+        for t in trash.Trash.TRASH:
+                Window.WIN.blit(Window.TRASH, (t.x, t.y))
+        for t in trash.Trash.TRASH1:
+                Window.WIN.blit(Window.TRASH1, (t.x, t.y))
+
         pygame.display.update()
     
     def draw_bonus_level(self):
