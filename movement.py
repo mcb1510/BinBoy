@@ -1,6 +1,5 @@
 from turtle import width
 import pygame
-from pyparsing import Char
 import gameStates
 import graphics
 from collisions import Collision
@@ -9,7 +8,7 @@ from trash import Trash
 
 class Chara:
     VEL_X = 4
-    VEL_Y = 10
+    VEL_Y = 8
     JUMP = False
     MOVE_L = False
     MOVE_R = False
@@ -28,7 +27,7 @@ class Chara:
             Chara.new_player_x -= Chara.VEL_X
             Chara.MOVE_L = True
             Chara.MOVE_R = False
-        elif keys_pressed[pygame.K_d] and binboy.x + Chara.VEL_X < graphics.Window.WIDTH - 100: #RIGHT
+        elif keys_pressed[pygame.K_d] and binboy.x + Chara.VEL_X < graphics.Window.WIDTH-40: #RIGHT
             Chara.new_player_x += Chara.VEL_X
             Chara.MOVE_R = True
             Chara.MOVE_L = False
@@ -54,16 +53,69 @@ class Screen:
             binboy.x -= Chara.VEL_X
             for plat in Platforms.PLATFORMS:
                 plat.x -= Chara.VEL_X
-            for trash in Trash.TRASH:
+            for trash in Trash.BANANAS:
                 trash.x -= Chara.VEL_X
-            for trash in Trash.TRASH1:
-                trash.x -= Chara.VEL_X    
+            for trash in Trash.BOTTLES:
+                trash.x -= Chara.VEL_X 
+            for trash in Trash.NEWSPAPERS:
+                trash.x -= Chara.VEL_X
+            for trash in Trash.PLASTICS:
+                trash.x -= Chara.VEL_X 
+            for trash in Trash.GOAL:
+                trash.x -= Chara.VEL_X 
+
         if Chara.MOVE_L and binboy.x - Chara.VEL_X < 300 and Screen.SCROLL_INDEX != gameStates.GameState.LEVEL_START:
             Screen.SCROLL_INDEX -= Screen.VEL_X
             binboy.x += Chara.VEL_X
             for plat in Platforms.PLATFORMS:
                 plat.x += Chara.VEL_X
-            for trash in Trash.TRASH:
+            for trash in Trash.BANANAS:
                 trash.x += Chara.VEL_X
-            for trash in Trash.TRASH1:
+            for trash in Trash.BOTTLES:
                 trash.x += Chara.VEL_X
+            for trash in Trash.NEWSPAPERS:
+                trash.x += Chara.VEL_X
+            for trash in Trash.PLASTICS:
+                trash.x += Chara.VEL_X
+            for trash in Trash.GOAL:
+                trash.x += Chara.VEL_X
+
+class Selection:
+    PLASTIC_BIN = False
+    PAPER_BIN = False
+    GLASS_BIN = False
+    TRASH_CAN = False
+
+    def hover():
+        cursor = pygame.mouse.get_pos()
+        if (cursor[0] in range(graphics.Cans.CAN1.left, graphics.Cans.CAN1.right) and
+            cursor[1] in range(graphics.Cans.CAN1.top, graphics.Cans.CAN1.bottom)):
+            Selection.TRASH_CAN = True
+        else:
+            Selection.TRASH_CAN = False
+
+        if (cursor[0] in range(graphics.Cans.CAN2.left, graphics.Cans.CAN2.right) and
+            cursor[1] in range(graphics.Cans.CAN2.top, graphics.Cans.CAN2.bottom)):
+            Selection.PLASTIC_BIN = True
+        else:
+            Selection.PLASTIC_BIN = False
+
+        if (cursor[0] in range(graphics.Cans.CAN3.left, graphics.Cans.CAN3.right) and
+            cursor[1] in range(graphics.Cans.CAN3.top, graphics.Cans.CAN3.bottom)):
+            Selection.PAPER_BIN = True
+        else:
+            Selection.PAPER_BIN = False
+
+        if (cursor[0] in range(graphics.Cans.CAN4.left, graphics.Cans.CAN4.right) and
+            cursor[1] in range(graphics.Cans.CAN4.top, graphics.Cans.CAN4.bottom)):
+            Selection.GLASS_BIN = True
+        else:
+            Selection.GLASS_BIN = False
+
+    def make_selection():
+        #get the cursor pos
+        #if the cursor is clicked checked that it is in a rect
+        #take the first item from the inventory and check if it belongs in that bin
+        #add points if it does, lose points if it doesnt
+        #delete the item from the inventory and get the next one
+        pass

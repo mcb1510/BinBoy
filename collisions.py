@@ -1,6 +1,7 @@
 import pygame
 import movement
 import graphics
+import gameStates
 from platforms import Platforms
 from trash import Trash
 
@@ -9,8 +10,8 @@ class Collision:
     y_collision = False
     player_on_ground = False
     new_player_rect = pygame.Rect(0,0,0,0)
-    heigth = 100
-    width = 50
+    heigth = 65
+    width = 40
 
     def checkXcolli(new_player_x, binboy):
         Collision.new_player_rect = pygame.Rect(new_player_x,binboy.y,Collision.width, Collision.heigth)
@@ -38,14 +39,34 @@ class Collision:
         if Collision.y_collision == False:
             binboy.y = new_player_y
 
+    
     def checkTrashColli(binboy):
         Collision.new_player_rect = pygame.Rect(binboy.x, binboy.y, Collision.width, Collision.heigth)
-        for Collision.trash in Trash.TRASH:
+        
+        for Collision.trash in Trash.BANANAS:
             if Collision.trash.colliderect(Collision.new_player_rect):
-                Trash.TRASH.remove(Collision.trash)
+                Trash.BANANAS.remove(Collision.trash)
                 graphics.Window.SCORE += 1
-        for Collision.trash in Trash.TRASH1:
+        
+        for Collision.trash in Trash.BOTTLES:
             if Collision.trash.colliderect(Collision.new_player_rect):
-                Trash.TRASH1.remove(Collision.trash)
+                Trash.BOTTLES.remove(Collision.trash)
                 graphics.Window.SCORE += 1
-    
+        
+        for Collision.trash in Trash.PLASTICS:
+            if Collision.trash.colliderect(Collision.new_player_rect):
+                Trash.PLASTICS.remove(Collision.trash)
+                graphics.Window.SCORE += 1
+        
+        for Collision.trash in Trash.NEWSPAPERS:
+            if Collision.trash.colliderect(Collision.new_player_rect):
+                Trash.NEWSPAPERS.remove(Collision.trash)
+                graphics.Window.SCORE += 1
+        
+        # If we hit the goal
+        for Collision.trash in Trash.GOAL:
+            if Collision.trash.colliderect(Collision.new_player_rect):
+                gameStates.GameState.HIT_GOAL = True
+                
+
+       

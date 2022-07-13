@@ -3,7 +3,7 @@ from maps import Maps
 
 class Platforms:
     PLATFORMS = []
-    PLAT_SIZE = 50
+    PLAT_SIZE = 40
 
     def createPlatforme():
         for row_index,row in enumerate(Maps.LEVEL_1):
@@ -12,7 +12,7 @@ class Platforms:
                 y = row_index * Platforms.PLAT_SIZE
                 #print(f"x {x}  y{y}")
                 if col == "X":
-                    platform = pygame.Rect((x,y,50,50))
+                    platform = pygame.Rect((x,y,40,40))
                     Platforms.PLATFORMS.append(platform)
 
     def setPlayerPosition():
